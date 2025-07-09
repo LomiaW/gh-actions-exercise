@@ -12,16 +12,14 @@ on:
           - dev
           - uat
         required: true
-        default: 'dev'    
+        default: dev
 
 jobs:
   init:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Deployment Branch Name and Environment
-        run: |
-          echo "Deployment Branch: ${{ github.ref_name }}"
-          echo "Deployment Environment: ${{ needs.init.outputs.deploy_env }}"
+      - name: Print Deployment Branch Name
+        run: echo "Deployment Branch is ${{ github.ref_name }}"
       - name: Print Inputs
         if: github.event_name == 'workflow_dispatch'
         run:  echo "Input Environment is ${{ toJson(github.event.inputs) }}"
