@@ -1,0 +1,38 @@
+name: Trigger Inputs Environment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Deployment Target Environment'
+        options:
+          - dev
+          - uat
+        required: true
+        default: 'dev'    
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize
+        run: echo "Initialization step for environment ${{ github.event.inputs.env }}"
+    outputs:
+      ## Set the main branch default environment to uat and dev for other branches, 
+      ## optionally, if triggered by dispatch, set the environment based on the input
+      deploy_env: ${{ github.ref == 'refs/heads/main' && 
+        github.event.inputs.env == 'uat' && 'uat' || 
+        github.event.inputs.env == 'dev' && 'dev' || 
+        'dev' }}
+
+  echo:
+    needs: init
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo Environment
+        run: echo "Environment is ${{ github.event.inputs.env }}"
+      - name: Echo Deploy Environment
+        run: echo "Deploy Environment is ${{ needs.init.outputs.deploy_env }}"  
