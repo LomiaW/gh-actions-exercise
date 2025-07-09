@@ -8,12 +8,13 @@ on:
   workflow_dispatch:
     inputs:
       env:
+        type: choice
         description: 'Deployment Target Environment'
         options:
           - dev
           - uat
         required: true
-        default: 'dev'    
+        default: dev
 
 jobs:
   init:
