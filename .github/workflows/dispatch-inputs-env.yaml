@@ -22,7 +22,7 @@ jobs:
         run: echo "Deployment Branch is ${{ github.ref_name }}"
       - name: Print Inputs
         if: github.event_name == 'workflow_dispatch'
-        run:  echo "Input Environment is ${{ toJson(github.event.inputs) }}"
+        run:  echo "Input Environment is ${{ inputs.env }}"
     outputs:
       ## Set the main branch default environment to uat and dev for other branches, 
       ## optionally, if triggered by dispatch, set the environment based on the input
