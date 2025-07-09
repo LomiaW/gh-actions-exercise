@@ -19,7 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Initialize
-        run: echo "Initialization step for environment ${{ github.event.inputs.env }}"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: echo "Initialization step for environment ${{ inputs.env }}"
     outputs:
       ## Set the main branch default environment to uat and dev for other branches, 
       ## optionally, if triggered by dispatch, set the environment based on the input
@@ -30,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Environment
-        run: echo "Environment is ${{ github.event.inputs.env }}"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: echo "Input Environment is ${{ github.event.inputs.env }}"
       - name: Echo Deploy Environment
-        run: echo "Deploy Environment is ${{ needs.init.outputs.deploy_env }}"  
+        run: echo "Deployment Target Environment is ${{ needs.init.outputs.deploy_env }}"  
