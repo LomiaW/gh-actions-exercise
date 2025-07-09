@@ -23,10 +23,7 @@ jobs:
     outputs:
       ## Set the main branch default environment to uat and dev for other branches, 
       ## optionally, if triggered by dispatch, set the environment based on the input
-      deploy_env: ${{ github.ref == 'refs/heads/main' && 
-        github.event.inputs.env == 'uat' && 'uat' || 
-        github.event.inputs.env == 'dev' && 'dev' || 
-        'dev' }}
+      deploy_env: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' && inputs.env || 'uat') || 'dev' }}
 
   echo:
     needs: init
